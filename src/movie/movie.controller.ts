@@ -19,29 +19,35 @@ export class MovieController {
   constructor(private movieService: MovieService) {}
 
   @Get()
-  getMovies() {
-    const { data } = this.movieService.getMovies();
+  async getMovies() {
+    const data = await this.movieService.getMovies();
     return { data, message: 'Get Movies' };
   }
 
+  @Get(':id')
+  async getMovie(@Param('id', ParseIntPipe) movieId: number) {
+    const data = await this.movieService.getMovieById(movieId);
+    return { data, message: 'Get Movie By Id' };
+  }
+
   @Post()
-  createMovie(@Body() dto: CreateMovieDto) {
-    const { data } = this.movieService.createMovie(dto);
+  async createMovie(@Body() dto: CreateMovieDto) {
+    const data = await this.movieService.createMovie(dto);
     return { data, message: 'Create Movie' };
   }
 
   @Put(':id')
-  updateMovieById(
+  async updateMovieById(
     @Param('id', ParseIntPipe) movieId: number,
     @Body() dto: UpdateMovieDto,
   ) {
-    const { data } = this.movieService.updateMovieById(movieId, dto);
+    const data = await this.movieService.updateMovieById(movieId, dto);
     return { data, message: 'Update Movie By ID' };
   }
 
   @Delete(':id')
-  deleteMovieById(@Param('id', ParseIntPipe) movieId: number) {
-    const { data } = this.movieService.deleteMovieById(movieId);
+  async deleteMovieById(@Param('id', ParseIntPipe) movieId: number) {
+    const data = await this.movieService.deleteMovieById(movieId);
     return { data, message: 'Delete Movie By ID' };
   }
 }
