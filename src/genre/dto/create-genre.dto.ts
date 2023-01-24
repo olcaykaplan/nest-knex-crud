@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateGenderDto {
+export class CreateGenreDto {
   @IsNotEmpty()
   @IsString()
   name: string;
