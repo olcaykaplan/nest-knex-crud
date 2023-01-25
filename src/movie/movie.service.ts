@@ -7,12 +7,30 @@ import { CreateMovieDto, UpdateMovieDto } from './dto';
 export class MovieService {
   constructor(@InjectModel() private knex: Knex) {}
   async getMovies() {
-    const movies = await this.knex('movies');
+    const movies = await this.knex()
+      .select(
+        'movies.*',
+        this.knex.raw(`GROUP_CONCAT(genres.name SEPARATOR ', ') as genres`),
+      )
+      .from('movie_genre')
+      .innerJoin('genres', 'movie_genre.genreId', 'genres.genreId')
+      .innerJoin('movies', 'movie_genre.movieId', 'movies.movieId')
+      .groupBy('movies.movieId');
+
+    console.log('getMovies movies: ', movies);
     return movies;
   }
-  async getMovieById(movieId: number) {
-    const movie = await this.knex('movies')
-      .where({ movieId })
+  async getMovieById(movieId: string) {
+    const movie = await this.knex()
+      .select(
+        'movies.*',
+        this.knex.raw(`GROUP_CONCAT(genres.name SEPARATOR ', ') as genres`),
+      )
+      .from('movie_genre')
+      .innerJoin('genres', 'movie_genre.genreId', 'genres.genreId')
+      .innerJoin('movies', 'movie_genre.movieId', 'movies.movieId')
+      .groupBy('movies.movieId')
+      .where({ 'movies.movieId': movieId })
       .then((movie) => (movie.length > 0 ? movie[0] : null));
     return movie;
   }
@@ -25,7 +43,7 @@ export class MovieService {
     });
     return newMovie;
   }
-  async updateMovieById(movieId: number, dto: UpdateMovieDto) {
+  async updateMovieById(movieId: string, dto: UpdateMovieDto) {
     const movie = await this.getMovieById(movieId);
     if (!movie) {
       return 'The movie was not found.';
@@ -36,7 +54,7 @@ export class MovieService {
     return 'The movie has been successfully updated.';
   }
 
-  async deleteMovieById(movieId: number) {
+  async deleteMovieById(movieId: string) {
     const movie = await this.getMovieById(movieId);
     if (!movie) {
       return 'The movie was not found.';

@@ -1,4 +1,6 @@
 // Update with your config settings.
+const dotenv = require('dotenv');
+dotenv.config();
 
 /**
  * @type {Object.<string, import("knex").Knex.Config> }
@@ -8,9 +10,9 @@ module.exports = {
     client: 'mysql',
     connection: {
       filename: './dev.sqlite3',
-      database: 'knex_crud',
-      user: 'root',
-      password: '728096Ok',
+      database: 'knex_crud',   
+      user: process.env.MYSQL_USERNAME,
+      password: process.env.MYSQL_PW,
     },
   },
 };

@@ -7,6 +7,7 @@ import {
   Body,
   ParseIntPipe,
   Param,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { CreateGenreDto, UpdateGenreDto } from './dto';
 import { GenreService } from './genre.service';
@@ -31,7 +32,7 @@ export class GenreController {
 
   @Put(':id')
   async updateGenreById(
-    @Param('id', ParseIntPipe) genreId: number,
+    @Param('id', ParseUUIDPipe) genreId: string,
     @Body() dto: UpdateGenreDto,
   ) {
     const data = await this.genreService.updateGenreById(genreId, dto);
@@ -39,7 +40,7 @@ export class GenreController {
   }
 
   @Delete(':id')
-  async deleteGenreById(@Param('id', ParseIntPipe) genreId: number) {
+  async deleteGenreById(@Param('id', ParseUUIDPipe) genreId: string) {
     const data = await this.genreService.deleteGenreById(genreId);
     return { data, message: 'Genre is Deleted' };
   }

@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -25,9 +26,9 @@ export class MovieController {
   }
 
   @Get(':id')
-  async getMovie(@Param('id', ParseIntPipe) movieId: number) {
+  async getMovieById(@Param('id', ParseUUIDPipe) movieId: string) {
     const data = await this.movieService.getMovieById(movieId);
-    return { data, message: 'Get Movie By Id' };
+    return { data, error: false };
   }
 
   @Post()
@@ -38,7 +39,7 @@ export class MovieController {
 
   @Put(':id')
   async updateMovieById(
-    @Param('id', ParseIntPipe) movieId: number,
+    @Param('id', ParseUUIDPipe) movieId: string,
     @Body() dto: UpdateMovieDto,
   ) {
     const data = await this.movieService.updateMovieById(movieId, dto);
@@ -46,7 +47,7 @@ export class MovieController {
   }
 
   @Delete(':id')
-  async deleteMovieById(@Param('id', ParseIntPipe) movieId: number) {
+  async deleteMovieById(@Param('id', ParseUUIDPipe) movieId: string) {
     const data = await this.movieService.deleteMovieById(movieId);
     return { data, message: 'Delete Movie By ID' };
   }
