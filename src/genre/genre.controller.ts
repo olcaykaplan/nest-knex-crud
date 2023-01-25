@@ -5,9 +5,10 @@ import {
   Put,
   Delete,
   Body,
-  ParseIntPipe,
   Param,
   ParseUUIDPipe,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { CreateGenreDto, UpdateGenreDto } from './dto';
 import { GenreService } from './genre.service';
@@ -20,14 +21,22 @@ export class GenreController {
   constructor(private genreService: GenreService) {}
   @Get()
   async getGenres() {
-    const data = await this.genreService.getGenres();
-    return { data, message: 'Get Genres' };
+    try {
+      const data = await this.genreService.getGenres();
+      return { data, error: false };
+    } catch (error) {
+      return { data: null, error: true, message: error.message };
+    }
   }
 
   @Post()
   async createGenre(@Body() dto: CreateGenreDto) {
-    const data = await this.genreService.createGenre(dto);
-    return { data, message: 'Genre is created' };
+    try {
+      const data = await this.genreService.createGenre(dto);
+      return { data, error: false };
+    } catch (error) {
+      return { data: null, error: true, message: error.message };
+    }
   }
 
   @Put(':id')
@@ -35,13 +44,21 @@ export class GenreController {
     @Param('id', ParseUUIDPipe) genreId: string,
     @Body() dto: UpdateGenreDto,
   ) {
-    const data = await this.genreService.updateGenreById(genreId, dto);
-    return { data, message: 'Genre is updated' };
+    try {
+      const data = await this.genreService.updateGenreById(genreId, dto);
+      return { data, error: false };
+    } catch (error) {
+      return { data: null, error: true, message: error.message };
+    }
   }
 
   @Delete(':id')
   async deleteGenreById(@Param('id', ParseUUIDPipe) genreId: string) {
-    const data = await this.genreService.deleteGenreById(genreId);
-    return { data, message: 'Genre is Deleted' };
+    try {
+      const data = await this.genreService.deleteGenreById(genreId);
+      return { data, error: false };
+    } catch (error) {
+      return { data: null, error: true, message: error.message };
+    }
   }
 }

@@ -14,7 +14,7 @@ exports.up = (knex) => {
     })
     .createTable('genres', (table) => {
       table.uuid('genreId').primary().defaultTo(knex.raw('(UUID())'));
-      table.string('name', 100).notNullable();
+      table.string('name', 100).unique().notNullable();
     })
     .createTable('movie_genre', (table) => {
       table.uuid('movieId');

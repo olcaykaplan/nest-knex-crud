@@ -22,7 +22,7 @@ export class GenreService {
 
   async updateGenreById(genreId: string, dto: UpdateGenreDto) {
     const genre = this.getGenreById(genreId);
-    if (!genre) return 'The genre was not found.';
+    if (!genre) throw new Error('The genre was not found.');
     await this.knex('genres')
       .where(genreId)
       .update({ ...dto });
@@ -31,7 +31,7 @@ export class GenreService {
 
   async deleteGenreById(genreId: string) {
     const genre = this.getGenreById(genreId);
-    if (!genre) return 'The genre was not found.';
+    if (!genre) throw new Error('The genre was not found.');
     await this.knex('genres').where(genreId).delete();
     return 'genre is Deleted';
   }

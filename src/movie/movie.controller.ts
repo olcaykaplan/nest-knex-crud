@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   ParseUUIDPipe,
   Post,
   Put,
@@ -21,20 +20,32 @@ export class MovieController {
 
   @Get()
   async getMovies() {
-    const data = await this.movieService.getMovies();
-    return { data, message: 'Get Movies' };
+    try {
+      const data = await this.movieService.getMovies();
+      return { data, error: false };
+    } catch (error) {
+      return { data: null, error: true, message: error.message };
+    }
   }
 
   @Get(':id')
   async getMovieById(@Param('id', ParseUUIDPipe) movieId: string) {
-    const data = await this.movieService.getMovieById(movieId);
-    return { data, error: false };
+    try {
+      const data = await this.movieService.getMovieById(movieId);
+      return { data, error: false };
+    } catch (error) {
+      return { data: null, error: true, message: error.message };
+    }
   }
 
   @Post()
   async createMovie(@Body() dto: CreateMovieDto) {
-    const data = await this.movieService.createMovie(dto);
-    return { data, message: 'Create Movie' };
+    try {
+      const data = await this.movieService.createMovie(dto);
+      return { data, error: false };
+    } catch (error) {
+      return { data: null, error: true, message: error.message };
+    }
   }
 
   @Put(':id')
@@ -42,13 +53,21 @@ export class MovieController {
     @Param('id', ParseUUIDPipe) movieId: string,
     @Body() dto: UpdateMovieDto,
   ) {
-    const data = await this.movieService.updateMovieById(movieId, dto);
-    return { data, message: 'Update Movie By ID' };
+    try {
+      const data = await this.movieService.updateMovieById(movieId, dto);
+      return { data, error: false };
+    } catch (error) {
+      return { data: null, error: true, message: error.message };
+    }
   }
 
   @Delete(':id')
   async deleteMovieById(@Param('id', ParseUUIDPipe) movieId: string) {
-    const data = await this.movieService.deleteMovieById(movieId);
-    return { data, message: 'Delete Movie By ID' };
+    try {
+      const data = await this.movieService.deleteMovieById(movieId);
+      return { data, error: false };
+    } catch (error) {
+      return { data: null, error: true, message: error.message };
+    }
   }
 }

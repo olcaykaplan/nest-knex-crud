@@ -17,7 +17,6 @@ export class MovieService {
       .innerJoin('movies', 'movie_genre.movieId', 'movies.movieId')
       .groupBy('movies.movieId');
 
-    console.log('getMovies movies: ', movies);
     return movies;
   }
   async getMovieById(movieId: string) {
@@ -32,6 +31,7 @@ export class MovieService {
       .groupBy('movies.movieId')
       .where({ 'movies.movieId': movieId })
       .then((movie) => (movie.length > 0 ? movie[0] : null));
+    if (!movie) throw new Error('The movie was not found.');
     return movie;
   }
   async createMovie(dto: CreateMovieDto) {
@@ -46,7 +46,7 @@ export class MovieService {
   async updateMovieById(movieId: string, dto: UpdateMovieDto) {
     const movie = await this.getMovieById(movieId);
     if (!movie) {
-      return 'The movie was not found.';
+      throw new Error('The movie was not found.');
     }
     await this.knex('movies')
       .where('movieId', movieId)
@@ -57,7 +57,7 @@ export class MovieService {
   async deleteMovieById(movieId: string) {
     const movie = await this.getMovieById(movieId);
     if (!movie) {
-      return 'The movie was not found.';
+      throw new Error('The movie was not found.');
     }
     await this.knex('movies').where('movieId', movieId).delete();
     return 'The movie has been successfully deleted.';
