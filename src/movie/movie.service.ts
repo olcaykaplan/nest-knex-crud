@@ -19,12 +19,11 @@ export class MovieService {
     return movies;
   }
   async getMovieById(movieId: string) {
-    const movie = await this.knex()
+    const movie = await this.knex('movie_genre')
       .select(
         'movies.*',
         this.knex.raw(`GROUP_CONCAT(genres.name SEPARATOR ', ') as genres`),
       )
-      .from('movie_genre')
       .leftJoin('genres', 'movie_genre.genreId', 'genres.genreId')
       .rightJoin('movies', 'movie_genre.movieId', 'movies.movieId')
       .groupBy('movies.movieId')
