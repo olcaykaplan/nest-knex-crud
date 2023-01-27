@@ -3,7 +3,7 @@ import { MovieModule } from './movie/movie.module';
 import { GenreModule } from './genre/genre.module';
 // import { KnexModule } from './knex/knex.module';
 import { KnexModule } from 'nest-knexjs';
-
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     MovieModule,
@@ -20,6 +20,9 @@ import { KnexModule } from 'nest-knexjs';
           database: 'knex_crud',
         },
       },
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
   ],
   providers: [],
