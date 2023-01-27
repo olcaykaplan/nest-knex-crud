@@ -16,7 +16,8 @@ export class GenreService {
     return genre;
   }
   async createGenre({ name }: CreateGenreDto) {
-    await this.knex('genres').insert({ name });
+    const genre = name.toLowerCase();
+    await this.knex('genres').insert({ name: genre });
     return 'genre is created';
   }
 
