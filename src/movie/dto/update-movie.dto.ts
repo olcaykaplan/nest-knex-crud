@@ -1,4 +1,4 @@
-import { IsOptional, IsNumber, IsString } from 'class-validator';
+import { IsOptional, IsNumber, IsString, IsArray } from 'class-validator';
 
 export class UpdateMovieDto {
   @IsOptional()
@@ -16,4 +16,8 @@ export class UpdateMovieDto {
   @IsOptional()
   @IsNumber()
   imdbRating?: number;
+
+  @IsOptional()
+  @IsArray()
+  genres: Array<string>;
 }
